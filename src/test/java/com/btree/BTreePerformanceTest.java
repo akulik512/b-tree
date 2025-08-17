@@ -7,19 +7,10 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 class BTreePerformanceTest {
-
-    private long measureExecutionTime(Runnable task) {
-        long startTime = System.nanoTime();
-        task.run();
-        long endTime = System.nanoTime();
-        return TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
-    }
     
     @Test
     @DisplayName("STRENGTH: B-tree vs TreeMap for random access with large datasets")
     void testBTreeVsTreeMapRandomAccess() {
-        // This test demonstrates a B-tree strength: efficient random access with large datasets
-        
         System.out.println("\n=== TESTING B-TREE STRENGTH: RANDOM ACCESS WITH LARGE DATASETS ===");
         
         // Create a B-tree with large minimum degree for disk-based scenarios
@@ -275,4 +266,12 @@ class BTreePerformanceTest {
         System.out.println("- Some implementations suffer from poor locality on sequential operations");
         System.out.println("- This is more pronounced in disk-based B-tree implementations");
     }
+
+    private long measureExecutionTime(Runnable task) {
+        long startTime = System.nanoTime();
+        task.run();
+        long endTime = System.nanoTime();
+        return TimeUnit.NANOSECONDS.toMillis(endTime - startTime);
+    }
+
 }
