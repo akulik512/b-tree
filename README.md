@@ -59,31 +59,46 @@ public class BTree<K extends Comparable<K>, V> {
 ### 🚀 B-Tree Strengths
 
 1. **Random Access with Large Datasets** 📈
-   - Test: Comparing B-tree vs TreeMap for large data lookups
-   - Result: B-tree optimized for systems with slow access (like disk storage)
-   - Benefit: Reduced number of node accesses due to multiple keys per node
+   - **Test Description**: Compares B-tree vs TreeMap for lookups in large datasets (100,000+ elements)
+   - **Expected Results**: 
+     * 🥇 B-tree should demonstrate comparable or slightly better performance for random lookups
+     * With larger minimum degree (10+), B-tree's advantage becomes more significant
+   - **Why**: B-trees minimize the number of disk/memory accesses with higher branching factor. Each node visit retrieves multiple keys at once, unlike binary trees where each node contains a single key.
+   - **Real-world Impact**: In database systems where disk I/O is expensive, B-trees significantly outperform binary search trees.
 
 2. **Range Queries** 🔢
-   - Test: Evaluating sequential data retrieval
-   - Result: Keys stored in sorted order within nodes enables efficient range operations
-   - Benefit: Excellent for database index implementations
+   - **Test Description**: Evaluates sequential range data retrieval between B-tree and TreeMap
+   - **Expected Results**: 
+     * 🥇 B-tree should excel at retrieving keys in a specific range
+     * Advantage increases with larger node degrees and range sizes
+   - **Why**: Keys stored in sorted order within nodes allow efficient traversal between adjacent keys with fewer node jumps. Once a node is loaded, multiple keys in sequence can be processed.
+   - **Real-world Impact**: Critical for database query optimizers that need to retrieve ranges of records efficiently.
 
 ### 🐢 B-Tree Weaknesses
 
 1. **Memory Overhead** 💾
-   - Test: Measuring memory usage with different node degrees
-   - Result: Higher memory overhead due to partially filled nodes
-   - Issue: Nodes must allocate space for maximum number of keys and children
+   - **Test Description**: Measures memory consumption with different tree structures and node degrees
+   - **Expected Results**: 
+     * 🚨 B-trees should show higher memory usage compared to binary tree implementations
+     * Memory usage increases with node degree
+   - **Why**: B-tree nodes must allocate space for the maximum possible number of keys and children, often resulting in partially filled nodes. This is a fundamental space-time tradeoff in the B-tree design.
+   - **Real-world Impact**: In memory-constrained environments, B-trees may not be the optimal choice unless disk I/O savings outweigh the memory cost.
 
 2. **Update Performance** ⚙️
-   - Test: Comparing update speed with TreeMap and HashMap
-   - Result: Slower for frequent updates due to complex rebalancing
-   - Issue: Node splits and merges require moving multiple keys
+   - **Test Description**: Compares update operation speed between B-tree, TreeMap, and HashMap
+   - **Expected Results**: 
+     * 🚨 B-tree updates should be slower than both TreeMap and significantly slower than HashMap
+     * Performance gap widens as the size of the tree increases
+   - **Why**: B-tree updates require complex rebalancing operations, including node splits, merges, and rotations. Each update might trigger cascading operations affecting multiple nodes.
+   - **Real-world Impact**: Applications with extremely high write volumes might benefit from alternative structures or buffering strategies.
 
 3. **Sequential Operation Patterns** 📉
-   - Test: Sequential vs random insertions
-   - Result: Sequential inserts can lead to many node splits
-   - Issue: Poor locality on sequential operations, especially in disk-based implementations
+   - **Test Description**: Tests sequential vs random insertion patterns in B-trees
+   - **Expected Results**: 
+     * 🚨 Sequential inserts should perform worse than random inserts in some cases
+     * Performance degradation increases with strictly increasing or decreasing key sequences
+   - **Why**: Sequential inserts can cause repeated splitting at the rightmost (or leftmost) path of the tree, leading to poor performance and potentially unbalanced structures. This is particularly problematic in disk-based implementations.
+   - **Real-world Impact**: Applications with naturally sequential data (like timestamps) may need to consider key transformation strategies or bulk loading techniques.
 
 ## 🎯 Use Cases
 
